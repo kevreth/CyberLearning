@@ -65,13 +65,11 @@ export abstract class Slide<T extends AnswerType> implements SlideInterface {
   }
   getSaveData(): SaveData {
     return new SaveData(
-      this.txt,
       this.result(this.ans, this.res)
     );
   }
   saveData() {
     const save = this.getSaveData();
-    if (save.txt === '') return;
     const data = localStorage.getItem('savedata') as string;
     const data1 = JSON.parse(data);
     const arr: Array<SaveData> = extend<Array<SaveData>>(
