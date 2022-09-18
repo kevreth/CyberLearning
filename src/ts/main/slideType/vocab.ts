@@ -5,7 +5,6 @@ import { continueButton, showButton, makeRow } from '../quiz';
 import { removeListener, isRandom, shuffle, shuffleMap } from '../utilities';
 import { Result } from '../result';
 import { ResponseB } from '../response';
-import { SaveData } from '../saveData';
 import { Mc } from './mc';
 export type vocabTuplesType = [
   txt: string,
@@ -66,12 +65,9 @@ export class Vocab extends Slide<Array<string>> {
     this.createPageContent(html_list[questionCtr], doc);
     const tuple = vocabTuples[questionCtr];
     const options = tuple[2];
-    // let maxWidth = 0;
     options.forEach((option, j) => {
       const buttonId = 'btn' + j.toString();
       const button = doc.getElementById(buttonId) as HTMLElement;
-      // const width = button.offsetWidth;
-      // if(width>maxWidth) maxWidth=width;
       button.addEventListener('click', () => {
         const answer = tuple[1];
         this.res.push(option);
@@ -131,11 +127,5 @@ export class Vocab extends Slide<Array<string>> {
   }
   result(ans: Array<string>, res: Array<string>): Array<boolean> {
     return new Result().result4(ans, res);
-  }
-  //overridden from Slide
-  getSaveData(): SaveData {
-    const ans = Array.from(this.list.keys());
-    const res = this.result(ans, this.res);
-    return new SaveData(this.txt, res);
   }
 }
