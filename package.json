@@ -6,13 +6,12 @@
   "author": "Kevin Rethwisch <rethwisch_kevin@va.gov>",
   "private": true,
   "scripts": {
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test:unit": "vitest --environment jsdom",
-    "test:e2e": "start-server-and-test http://localhost:9000/ 'cypress open --e2e'",
-    "test:e2e:ci": "start-server-and-test preview http://localhost:9000/ 'cypress run --e2e'",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "format": "prettier --write src/ts --ignore-path .gitignore",
+    "unit": "vitest --environment jsdom",
+    "cypress": "npx cypress run --headed",
+    "build": "quasar build",
+    "lint": "eslint src/ts --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "dpdm": "dpdm --no-warning --no-tree src/ts/main/quiz.ts"
   },
   "dependencies": {
     "@datastructures-js/queue": "^4.2.2",
@@ -59,6 +58,7 @@
     "@vue/tsconfig": "^0.1.3",
     "autoprefixer": "^10.4.2",
     "cypress": "^10.4.0",
+    "dpdm": "^3.10.0",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-cypress": "^2.12.1",
