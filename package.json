@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A Quasar Project",
   "productName": "Quasar App",
-  "author": "Kevin Rethwisch <rethwisch_kevin@va.gov>",
+  "author": "Kevin Rethwisch",
   "private": true,
   "scripts": {
     "format": "prettier --write src/ts --ignore-path .gitignore",

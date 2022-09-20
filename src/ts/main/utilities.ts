@@ -3,6 +3,7 @@ import $ from 'jquery';
 import type { Course } from './quiz/course';
 import * as yaml from 'js-yaml';
 import { SaveData } from './quiz/slide/saveData';
+import { boolean } from 'yargs';
 
 export function makeButton(id: string, clazz: string, content: string): string {
   return `<button id="${id}" class="${clazz}" type="button">${content}</button>`;
@@ -61,6 +62,10 @@ export function getSavedDataArray(): Array<SaveData> {
     data1
   );
   return arr;
+}
+//Will be used to check course file for duplicate txt fields
+export function hasDuplicates<T>(arr: Array<T>): boolean {
+  return new Set(arr).size != arr.length;
 }
 // =========================== Lodash wrappers ================================
 export function random(min: number, max: number): number {
