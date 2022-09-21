@@ -182,7 +182,7 @@ export class Gap extends Slide<Array<string>> {
       const row_a = this.gapQuest(response_, answer, i, this.ans, this.txt);
       rows.push(row_a);
     }
-    const correctCtr = (this.result(this.ans, this.res) as Array<boolean>).filter(Boolean).length;
+    const correctCtr = (this.result() as Array<boolean>).filter(Boolean).length;
     return new Evaluation(this.ans.length, correctCtr, rows.join('\n'));
   }
   gapQuest(

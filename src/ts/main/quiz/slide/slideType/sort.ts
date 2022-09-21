@@ -35,7 +35,7 @@ export class Sort extends Slide<Array<string>> {
   evaluate(): Evaluation {
     let correctCtr = 0;
     const text = makeRow(this.txt, this.res.toString(), this.ans.toString());
-    if (this.result(this.ans, this.res)) correctCtr++;
+    if (this.result()) correctCtr++;
     return new Evaluation(1, correctCtr, text);
   }
   addBehavior(doc: Document): void {
@@ -50,7 +50,7 @@ export class Sort extends Slide<Array<string>> {
     done.addEventListener('click', () => {
       this.res = sortables.map((x) => x.element.innerHTML);
       let msg = 'incorrect';
-      if (this.result(this.ans, this.res)) msg = 'correct';
+      if (this.result()) msg = 'correct';
       const content = doc.getElementById('content') as HTMLElement;
       content.insertAdjacentHTML('beforeend', msg);
       done.remove();

@@ -78,7 +78,7 @@ export abstract class Slide<T extends AnswerType> implements SlideInterface {
     arr.push(save);
     localStorage.setItem('savedata', JSON.stringify(arr));
   }
-  result(ans: T, res: T): ResultReturnType {
-    return this.resultType(ans,res);
+  result(): ResultReturnType {
+    return this.resultType(this.ans,this.res);
   }
 }

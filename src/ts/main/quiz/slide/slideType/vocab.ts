@@ -115,6 +115,7 @@ export class Vocab extends Slide<Array<string>> {
   }
   evaluate(): Evaluation {
     const ans = Array.from(this.list.keys());
+    this.ans = ans;
     const txt = Array.from(this.list.values());
     const resp = new ResponseB();
     resp.init(txt, ans, this.res);
@@ -124,7 +125,7 @@ export class Vocab extends Slide<Array<string>> {
       rows.push(row);
     }
     const row_accum = rows.join('\n');
-    const correctCtr = (this.result(ans, this.res) as Array<boolean>).filter(Boolean).length;
+    const correctCtr = (this.result() as Array<boolean>).filter(Boolean).length;
     return new Evaluation(this.list.size, correctCtr, row_accum);
   }
 }

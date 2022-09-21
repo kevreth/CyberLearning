@@ -25,7 +25,7 @@ export class Mc extends Slide<string> {
     this.createPageContent(html, doc);
     this.createHtml(this.txt, options);
     options.forEach((option, optionCtr) => {
-      this.addBehavior(doc, option, options.length, optionCtr, this.ans);
+      this.addBehavior(doc, option, options.length, optionCtr);
     });
     this.setWidths(options, doc);
   }
@@ -46,8 +46,7 @@ export class Mc extends Slide<string> {
     doc: Document,
     option: string,
     length: number,
-    optionCtr: number,
-    ans: string
+    optionCtr: number
   ): void {
     const element = doc.getElementById('btn' + optionCtr) as HTMLElement;
     element.addEventListener('click', () => {
@@ -55,9 +54,9 @@ export class Mc extends Slide<string> {
         removeListener(doc.getElementById('btn' + i) as HTMLElement);
       const optionButton = doc.getElementById('btn' + optionCtr) as HTMLElement;
       let color = 'red';
-      if (this.result(option, ans)) color = 'green';
-      optionButton.style.backgroundColor = color;
       this.res = option;
+      if (this.result()) color = 'green';
+      optionButton.style.backgroundColor = color;
       this.saveData();
       showButton(doc);
     });
@@ -74,7 +73,7 @@ export class Mc extends Slide<string> {
   public evaluate(): Evaluation {
     let correctCtr = 0;
     const text = makeRow(this.txt, this.res, this.ans);
-    if (this.result(this.ans, this.res)) correctCtr++;
+    if (this.result()) correctCtr++;
     return new Evaluation(1, correctCtr, text);
   }
 }

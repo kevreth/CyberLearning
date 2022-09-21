@@ -116,7 +116,7 @@ export class Select extends Slide<Array<number>> {
   evaluate(): Evaluation {
     const text = makeRow(this.txt, this.res.toString(), this.ans.toString());
     let correctCtr = 0;
-    if (this.result(this.ans, this.res)) correctCtr++;
+    if (this.result()) correctCtr++;
     return new Evaluation(1, correctCtr, text);
   }
 }
