@@ -9,7 +9,7 @@ import { SetWidths } from '../strategies/setWidthsStrategy';
 polyfill({
   dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride,
 });
-export class Gap extends Slide<Array<string>> {
+export class Gap extends Slide {
   processJson(json: Gap): void {
     ({ txt: this.txt, ans: this.ans, isExercise: this.isExercise } = json);
   }
@@ -19,7 +19,7 @@ export class Gap extends Slide<Array<string>> {
     const maxWidthStrategy = SetWidths.TARGETED;
     const createHtml = this.createHtml;
     let ans = this.ans;
-    if (isRandom()) ans = shuffle(ans);
+    if (isRandom()) ans = shuffle(ans as string[]);
     const makeSlidesStrategy = this.makeSlidesStrategy as MakeSlidesTypeGap;
     makeSlidesStrategy(txt, ans, createHtml, maxWidthStrategy, doc, setValues);
   }

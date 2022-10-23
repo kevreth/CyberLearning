@@ -12,6 +12,7 @@ import type {
 export interface SlideInterface {
   txt: AnswerType;
   type: string;
+  cont: boolean;
   isExercise: boolean;
   pageTemplate: string;
   createHtml: CreateHtmlTypeIntersection;
@@ -30,4 +31,5 @@ export interface SlideInterface {
   result(): ResultReturnType;
   getAnswerCount(): number;
   getSlideSavedIndex(arr: Array<SaveData>): number;
+  setContinue(): void;
 }

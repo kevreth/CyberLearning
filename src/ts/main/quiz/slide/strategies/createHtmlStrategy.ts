@@ -1,4 +1,5 @@
 import { isRandom, makeButton, shuffle } from '../../../utilities';
+import type { AnswerType } from './resultStrategy';
 export type CreateHtmlTypeGap = (
   remaining: string,
   fills: string,
@@ -11,7 +12,7 @@ export type CreateHtmlTypeSelect = (
   instructions: string,
   txt: string[]
 ) => string;
-export type CreateHtmlTypeSort = (inst: string, ans: string[]) => string;
+export type CreateHtmlTypeSort = (inst: string, ans: AnswerType) => string;
 export type CreateHtmlTypeUnion =
   | CreateHtmlTypeGap
   | CreateHtmlTypeImap
@@ -95,7 +96,7 @@ export class CreateHtml {
     let rev = '<div id="selection"></div>\n<section class="container">\n';
     let list = ans;
     /////////  for testing
-    if (isRandom()) list = shuffle(list);
+    if (isRandom()) list = shuffle(list as string[]);
     else list = ['b', 'a', 'c', 'd'];
     //////////////////////////////////
     list.forEach((item) => {

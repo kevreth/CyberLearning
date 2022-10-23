@@ -7,14 +7,15 @@ import { showButton } from '../../../makeSlides';
 import { createPageContent } from '../../createPageContent';
 import type { SetValues } from '../../setValues';
 import type { CreateHtmlTypeSelect } from '../createHtmlStrategy';
+import type { AnswerType } from '../resultStrategy';
 
 export function makeSlidesStrategySelect(
   inst: string,
-  ans: number[],
+  ans: AnswerType,
   txt: string,
   createHtml: CreateHtmlTypeSelect,
   doc: Document,
-  setValues: SetValues<number[]>
+  setValues: SetValues
 ) {
   const txtarr = txt.split(' ');
   const html = createHtml(inst, txtarr);
@@ -26,7 +27,7 @@ export function makeSlidesStrategySelect(
     const res = evaluate2(element, numWords, ans, doc);
     setValues.setRes(res);
     setValues.saveData();
-    showButton(doc);
+    showButton(doc, setValues);
   });
 }
 function iter2(ctr: number, doc: Document): void {
@@ -47,7 +48,7 @@ function selected(id: string, doc: Document): void {
 function evaluate2(
   element: Element,
   numWords: number,
-  ans: Array<number>,
+  ans: AnswerType,
   doc: Document
 ): Array<number> {
   const responses: number[] = mark(doc);
@@ -71,19 +72,21 @@ function mark(doc: Document) {
   }
   return responses;
 }
-function decorate(ans: number[], responses: number[], doc: Document) {
+function decorate(ans: AnswerType, responses: AnswerType, doc: Document) {
+  const _ans = ans as string[];
+  const _responses = responses as string[];
   //items that were not selected but should have been
-  let diff = difference(ans, responses);
+  let diff = difference(_ans, _responses);
   style(diff, 'underline', 'red', doc);
   //items that should not have been selected but were
-  diff = difference(responses, ans);
+  diff = difference(_responses, _ans);
   style(diff, 'line-through', 'red', doc);
   //correctly selected items
-  diff = intersection(responses, ans);
+  diff = intersection(_responses, _ans);
   style(diff, 'underline', 'green', doc);
 }
 function style(
-  diff: Array<number>,
+  diff: AnswerType,
   decoration: string,
   color: string,
   doc: Document

@@ -9,7 +9,7 @@ export function makeSlidesStrategyImap(
   img: string,
   createHtml: CreateHtmlTypeImap,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) {
   const html = createHtml(txt, img);
   createPageContent(html, doc);
@@ -21,7 +21,7 @@ export function makeSlidesStrategyImap(
     },
   });
 }
-function afterAll(setValues: SetValues<string>, doc: Document) {
+function afterAll(setValues: SetValues, doc: Document) {
   const ids = getChildIds(doc, 'imagemap');
   ids.forEach((id) => {
     const element = doc.getElementById(id) as HTMLElement;
@@ -37,7 +37,7 @@ function afterAll(setValues: SetValues<string>, doc: Document) {
       if (setValues.result()) classname = 'shape_correct';
       element.classList.add(classname);
       setValues.saveData();
-      showButton(doc);
+      showButton(doc, setValues);
     });
   });
 }

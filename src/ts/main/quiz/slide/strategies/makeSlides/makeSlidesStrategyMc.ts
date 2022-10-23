@@ -12,7 +12,7 @@ export function makeSlidesStrategyMc(
   createHtml: CreateHtmlTypeMc,
   maxWidthStrategy: SetWidthTypeSimple,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) {
   const shuffleFlag = isExercise && isRandom();
   if (shuffleFlag) options = shuffle(options);
@@ -28,7 +28,7 @@ function addBehavior(
   option: string,
   length: number,
   optionCtr: number,
-  setValues: SetValues<string>
+  setValues: SetValues
 ): void {
   const element = doc.getElementById('btn' + optionCtr) as HTMLElement;
   element.addEventListener('click', () => {
@@ -38,7 +38,7 @@ function addBehavior(
 function optionButtonEventListener(
   length: number,
   doc: Document,
-  setValues: SetValues<string>,
+  setValues: SetValues,
   option: string,
   optionCtr: number
 ) {
@@ -47,10 +47,10 @@ function optionButtonEventListener(
   setValues.setRes(option);
   setValues.saveData();
   decorateOptionButton(setValues, doc, optionCtr);
-  showButton(doc);
+  showButton(doc, setValues);
 }
 function decorateOptionButton(
-  setValues: SetValues<string>,
+  setValues: SetValues,
   doc: Document,
   optionCtr: number
 ) {

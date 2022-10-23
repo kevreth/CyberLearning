@@ -1,6 +1,6 @@
 import { Slide } from '../../slide';
 import type { MakeSlidesTypeImap } from '../strategies/makeSlidesStrategy';
-export class Imap extends Slide<string> {
+export class Imap extends Slide {
   img = '';
   processJson(json: Imap): void {
     ({

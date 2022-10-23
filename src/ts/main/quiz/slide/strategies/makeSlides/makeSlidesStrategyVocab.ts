@@ -8,6 +8,7 @@ import {
 import { continueButton, showButton } from '../../../makeSlides';
 import { createPageContent } from '../../createPageContent';
 import { SaveData } from '../../saveData';
+import type { SetValues } from '../../setValues';
 import type { CreateHtmlTypeMc } from '../createHtmlStrategy';
 import type { AnswerType } from '../resultStrategy';
 import type { SetWidthTypeSimple } from '../setWidthsStrategy';
@@ -32,17 +33,18 @@ export function getMissingSlides(
 }
 export function makeSlidesStrategyVocab(
   map: Map<string, string>,
-  res: string[],
+  res: AnswerType,
   createHtml: CreateHtmlTypeMc,
   maxWidthStrategy: SetWidthTypeSimple,
-  doc: Document
+  doc: Document,
+  setValues: SetValues
 ): void {
   const txtArr = Array.from(map.values());
   const savedData = getSavedDataArray();
   const missing = getMissingSlides(savedData, txtArr);
   const vocabTuples = generateQuestions(map, missing);
   const html_list = createHtmlLoop(vocabTuples, createHtml);
-  paging(doc, html_list, vocabTuples, 0, maxWidthStrategy, res);
+  paging(doc, html_list, vocabTuples, 0, maxWidthStrategy, res, setValues);
 }
 export function paging(
   doc: Document,
@@ -50,7 +52,8 @@ export function paging(
   vocabTuples: vocabTuplesType,
   questionCtr: number,
   maxWidthStrategy: SetWidthTypeSimple,
-  res: string[]
+  res: AnswerType,
+  setValues: SetValues
 ): void {
   createPageContent(html_list[questionCtr], doc);
   const tuple = vocabTuples[questionCtr];
@@ -67,6 +70,7 @@ export function paging(
       questionCtr,
       html_list,
       vocabTuples,
+      setValues,
       maxWidthStrategy
     );
   });
@@ -76,18 +80,19 @@ export function addOptionButtonEventListener(
   j: number,
   doc: Document,
   answer: string,
-  res: string[],
+  res: AnswerType,
   option: string,
   options: string[],
   questionCtr: number,
   html_list: string[],
   vocabTuples: vocabTuplesType,
+  setValues: SetValues,
   maxWidthStrategy: SetWidthTypeSimple
 ) {
   const buttonId = 'btn' + j.toString();
   const button = doc.getElementById(buttonId) as HTMLElement;
   button.addEventListener('click', () => {
-    res.push(option);
+    (res as string[]).push(option);
     setButtonColor(option, answer, button);
     for (let i = 0; i < options.length; i++) {
       const button = doc.getElementById('btn' + i) as HTMLElement;
@@ -100,12 +105,23 @@ export function addOptionButtonEventListener(
         vocabTuples,
         questionCtr,
         maxWidthStrategy,
-        res
+        res,
+        setValues
       );
-      saveData(vocabTuples[questionCtr][0], res[questionCtr], timestampNow());
+      saveData(
+        vocabTuples[questionCtr][0],
+        (res as string[])[questionCtr],
+        timestampNow(),
+        true
+      );
     } else {
-      saveData(vocabTuples[questionCtr][0], res[questionCtr], timestampNow());
-      showButton(doc);
+      saveData(
+        vocabTuples[questionCtr][0],
+        (res as string[])[questionCtr],
+        timestampNow(),
+        true
+      );
+      showButton(doc, setValues);
     }
   });
 }
@@ -124,11 +140,20 @@ export function addContinueButtonListener(
   vocabTuples: vocabTuplesType,
   questionCtr: number,
   maxWidthStrategy: SetWidthTypeSimple,
-  res: string[]
+  res: AnswerType,
+  setValues: SetValues
 ) {
   const element = continueButton(doc) as HTMLElement;
   element.addEventListener('click', (): void => {
-    paging(doc, html_list, vocabTuples, questionCtr + 1, maxWidthStrategy, res);
+    paging(
+      doc,
+      html_list,
+      vocabTuples,
+      questionCtr + 1,
+      maxWidthStrategy,
+      res,
+      setValues
+    );
   });
 }
 export function createHtmlLoop(

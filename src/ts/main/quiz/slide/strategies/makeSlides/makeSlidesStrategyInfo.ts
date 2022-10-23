@@ -2,12 +2,11 @@ import { createContinueButton, MakeSlides } from '../../../makeSlides';
 import { createPageContent } from '../../createPageContent';
 import type { SetValues } from '../../setValues';
 import type { CreateHtmlTypeInfo } from '../createHtmlStrategy';
-
 export function makeSlidesStrategyInfo(
   txt: string,
   createHtml: CreateHtmlTypeInfo,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) {
   const html = createHtml(txt);
   createPageContent(html, doc);

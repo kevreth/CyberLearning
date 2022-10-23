@@ -2,6 +2,7 @@ import { showButton } from '../../../makeSlides';
 import { createPageContent } from '../../createPageContent';
 import type { SetValues } from '../../setValues';
 import type { CreateHtmlTypeGap } from '../createHtmlStrategy';
+import type { AnswerType } from '../resultStrategy';
 import type { SetWidthTypeComplex } from '../setWidthsStrategy';
 //===the main divs are
 //fills: the strings to drag into the gaps
@@ -10,26 +11,26 @@ import type { SetWidthTypeComplex } from '../setWidthsStrategy';
 //response: grading after the last drop
 export function makeSlidesStrategyGap(
   txt: string,
-  ans: string[],
+  ans: AnswerType,
   createHtml: CreateHtmlTypeGap,
   maxWidthStrategy: SetWidthTypeComplex,
   doc: Document,
-  setValues: SetValues<string[]>
+  setValues: SetValues
 ): void {
   const _fills = fills(ans);
   const _gaps = gaps(ans.length, txt);
   const remaining = ans.length.toString();
   const html = createHtml(remaining, _fills, _gaps);
   createPageContent(html, doc);
-  ans.forEach((currentFills, ctr) => {
+  (ans as string[]).forEach((currentFills, ctr) => {
     setfills(ctr, currentFills, doc);
     setgap(ctr, doc, ans, setValues);
   });
   maxWidthStrategy(ans.length, 'fill', 'gap', doc);
 }
-export function fills(ans: string[]): string {
+export function fills(ans: AnswerType): string {
   let fill_accum = '';
-  ans.forEach((currentFills, ctr) => {
+  (ans as string[]).forEach((currentFills, ctr) => {
     const fill_html =
       `\n    <span id="fill${ctr}" ` +
       `class="fills" draggable="true">${currentFills} &nbsp;&nbsp;</span>`;
@@ -55,8 +56,8 @@ export function gaps(length: number, gaps: string): string {
 function setgap(
   ctr: number,
   doc: Document,
-  ans: string[],
-  setValues: SetValues<string[]>
+  ans: AnswerType,
+  setValues: SetValues
 ): void {
   const id = doc.getElementById('gap' + ctr) as HTMLElement;
   id.style.display = 'inline-block';
@@ -87,13 +88,13 @@ function setgap(
       const res = evaluateA(doc, ans);
       setValues.setRes(res);
       setValues.saveData();
-      showButton(doc);
+      showButton(doc, setValues);
     }
     id.ondrop = null;
     (e.target as HTMLElement).style.removeProperty('background-color');
   };
 }
-function evaluateA(doc: Document, ans: string[]): Array<string> {
+function evaluateA(doc: Document, ans: AnswerType): Array<string> {
   const responses: string[] = [];
   const ansId = doc.getElementsByClassName('ans');
   Array.prototype.forEach.call(ansId, (slide) => {

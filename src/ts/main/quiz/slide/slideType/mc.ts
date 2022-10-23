@@ -1,7 +1,7 @@
 import { Slide } from '../../slide';
 import type { MakeSlidesTypeMc } from '../strategies/makeSlidesStrategy';
 import { SetWidths } from '../strategies/setWidthsStrategy';
-export class Mc extends Slide<string> {
+export class Mc extends Slide {
   o: string[] = [];
   processJson(json: Mc): void {
     ({ txt: this.txt, o: this.o, isExercise: this.isExercise } = json);

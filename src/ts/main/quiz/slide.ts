@@ -14,10 +14,11 @@ import type { SlideInterface } from './slideInterface';
 const { set: saveData } = SaveData;
 type AnswerTypeIntersection = string & string[];
 type ResultTypeIntersection = boolean & boolean[];
-export abstract class Slide<T extends AnswerType> implements SlideInterface {
+export abstract class Slide implements SlideInterface {
   txt!: AnswerType;
-  ans!: T;
-  res!: T;
+  ans!: AnswerType;
+  res!: AnswerType;
+  cont = false;
   public pageTemplate = `
     <div id="slide">
       <div id="content">
@@ -32,6 +33,9 @@ export abstract class Slide<T extends AnswerType> implements SlideInterface {
     public readonly evaluateStrategy: EvaluateType,
     public readonly resultType: ResultType
   ) {}
+  setContinue(): void {
+    this.cont = true;
+  }
   getSlideSavedIndex(saves: Array<SaveData>): number {
     //TODO: factor out code in common with MakeSlides.showSlides() and Score.exercise()
     let retval = -1;
@@ -53,7 +57,7 @@ export abstract class Slide<T extends AnswerType> implements SlideInterface {
   abstract processJson(json: SlideInterface): void;
   abstract makeSlides(doc: Document): void;
   //necessary to load results from save file
-  setResults(res: T): void {
+  setResults(res: AnswerType): void {
     this.res = res;
   }
   evaluate(): Evaluation {
@@ -66,18 +70,20 @@ export abstract class Slide<T extends AnswerType> implements SlideInterface {
   saveData() {
     const txt = this.txt;
     const res = this.res;
-    saveData(txt, res, timestampNow());
+    const cont = this.cont;
+    saveData(txt, res, timestampNow(), cont);
   }
   result(): ResultReturnType {
     return this.resultType(this.ans, this.res);
   }
-  setRes(res: T): void {
+  setRes(res: AnswerType): void {
     this.res = res;
   }
   getSetValues() {
     const saveData = () => this.saveData();
     const result = (): ResultReturnType => this.result();
-    const setRes = (res: T): void => this.setRes(res);
-    return new SetValues<T>(saveData, result, setRes);
+    const setRes = (res: AnswerType): void => this.setRes(res);
+    const setContinue = (): void => this.setContinue();
+    return new SetValues(saveData, result, setRes, setContinue);
   }
 }

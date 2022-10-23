@@ -4,13 +4,14 @@ import { showButton } from '../../../makeSlides';
 import { createPageContent } from '../../createPageContent';
 import type { SetValues } from '../../setValues';
 import type { CreateHtmlTypeSort } from '../createHtmlStrategy';
+import type { AnswerType } from '../resultStrategy';
 
 export function makeSlidesStrategySort(
   txt: string,
-  ans: string[],
+  ans: AnswerType,
   createHtml: CreateHtmlTypeSort,
   doc: Document,
-  setValues: SetValues<string[]>
+  setValues: SetValues
 ): void {
   const html = createHtml(txt, ans);
   createPageContent(html, doc);
@@ -31,7 +32,7 @@ export function makeSlidesStrategySort(
     content.insertAdjacentHTML('beforeend', msg);
     done.remove();
     setValues.saveData();
-    showButton(doc);
+    showButton(doc, setValues);
   });
   function Sortable(element: Element, index: number) {
     const animation = gsap.to(element, {

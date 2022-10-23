@@ -1,6 +1,6 @@
 import { Slide } from '../../slide';
 import type { MakeSlidesTypeSelect } from '../strategies/makeSlidesStrategy';
-export class Select extends Slide<Array<number>> {
+export class Select extends Slide {
   inst = '';
   processJson(json: Select): void {
     ({

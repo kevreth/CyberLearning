@@ -14,6 +14,7 @@ import { makeSlidesStrategyMc } from './makeSlides/makeSlidesStrategyMc';
 import { makeSlidesStrategySelect } from './makeSlides/makeSlidesStrategySelect';
 import { makeSlidesStrategySort } from './makeSlides/makeSlidesStrategySort';
 import { makeSlidesStrategyVocab } from './makeSlides/makeSlidesStrategyVocab';
+import type { AnswerType } from './resultStrategy';
 import type {
   SetWidthTypeComplex,
   SetWidthTypeSimple,
@@ -23,24 +24,24 @@ import type {
 /////////////////////////////////////////////////////////////////////////////
 export type MakeSlidesTypeGap = (
   txt: string,
-  ans: string[],
+  ans: AnswerType,
   createHtml: CreateHtmlTypeGap,
   maxWidthStrategy: SetWidthTypeComplex,
   doc: Document,
-  setValues: SetValues<string[]>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeImap = (
   txt: string,
   img: string,
   createHtml: CreateHtmlTypeImap,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeInfo = (
   txt: string,
   createHtml: CreateHtmlTypeInfo,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeMc = (
   txt: string,
@@ -49,29 +50,30 @@ export type MakeSlidesTypeMc = (
   createHtml: CreateHtmlTypeMc,
   maxWidthStrategy: SetWidthTypeSimple,
   doc: Document,
-  setValues: SetValues<string>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeSelect = (
   inst: string,
-  ans: number[],
+  ans: AnswerType,
   txt: string,
   createHtml: CreateHtmlSelectType,
   doc: Document,
-  setValues: SetValues<number[]>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeSort = (
   txt: string,
-  ans: string[],
+  ans: AnswerType,
   createHtml: CreateHtmlTypeSort,
   doc: Document,
-  setValues: SetValues<string[]>
+  setValues: SetValues
 ) => void;
 export type MakeSlidesTypeVocab = (
   list: Map<string, string>,
-  res: string[],
+  res: AnswerType,
   createHtml: CreateHtmlTypeMc,
   maxWidthStrategy: SetWidthTypeSimple,
-  doc: Document
+  doc: Document,
+  setValues: SetValues
 ) => void;
 export type MakeSlidesType =
   | MakeSlidesTypeGap
@@ -110,7 +112,7 @@ export class MakeSlides {
     img: string,
     createHtml: CreateHtmlTypeImap,
     doc: Document,
-    setValues: SetValues<string>
+    setValues: SetValues
   ) {
     makeSlidesStrategyImap(txt, img, createHtml, doc, setValues);
   };
@@ -121,7 +123,7 @@ export class MakeSlides {
     txt: string,
     createHtml: CreateHtmlTypeInfo,
     doc: Document,
-    setValues: SetValues<string>
+    setValues: SetValues
   ) {
     makeSlidesStrategyInfo(txt, createHtml, doc, setValues);
   };
@@ -135,7 +137,7 @@ export class MakeSlides {
     createHtml: CreateHtmlTypeMc,
     maxWidthStrategy: SetWidthTypeSimple,
     doc: Document,
-    setValues: SetValues<string>
+    setValues: SetValues
   ) {
     makeSlidesStrategyMc(
       txt,
@@ -152,11 +154,11 @@ export class MakeSlides {
   /////////////////////////////////////////////////////////////////////////////
   public static readonly SELECT = function (
     inst: string,
-    ans: number[],
+    ans: AnswerType,
     txt: string,
     createHtml: CreateHtmlSelectType,
     doc: Document,
-    setValues: SetValues<number[]>
+    setValues: SetValues
   ) {
     makeSlidesStrategySelect(inst, ans, txt, createHtml, doc, setValues);
   };
@@ -165,10 +167,10 @@ export class MakeSlides {
   /////////////////////////////////////////////////////////////////////////////
   public static readonly SORT = function (
     txt: string,
-    ans: string[],
+    ans: AnswerType,
     createHtml: CreateHtmlTypeSort,
     doc: Document,
-    setValues: SetValues<string[]>
+    setValues: SetValues
   ) {
     makeSlidesStrategySort(txt, ans, createHtml, doc, setValues);
   };
@@ -177,11 +179,19 @@ export class MakeSlides {
   /////////////////////////////////////////////////////////////////////////////
   public static readonly VOCAB = function (
     list: Map<string, string>,
-    res: string[],
+    res: AnswerType,
     createHtml: CreateHtmlTypeMc,
     maxWidthStrategy: SetWidthTypeSimple,
-    doc: Document
+    doc: Document,
+    setValues: SetValues
   ) {
-    makeSlidesStrategyVocab(list, res, createHtml, maxWidthStrategy, doc);
+    makeSlidesStrategyVocab(
+      list,
+      res,
+      createHtml,
+      maxWidthStrategy,
+      doc,
+      setValues
+    );
   };
 }

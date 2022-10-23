@@ -3,6 +3,7 @@ import { Json } from '../globals';
 import { isEqual, makeButton } from '../utilities';
 import { evaluate } from './evaluate/evaluate.support';
 import { SaveData } from './slide/saveData';
+import type { SetValues } from './slide/setValues';
 import type { SlideInterface } from './slideInterface';
 const { get: getSavedDataArray } = SaveData;
 ///////////////// PHASE 3: make slides
@@ -82,9 +83,10 @@ export class MakeSlides {
     startOverButton(doc);
   }
 }
-export function showButton(doc: Document): HTMLElement {
+export function showButton(doc: Document, setValues: SetValues): HTMLElement {
   const continue_btn = continueButton(doc);
   continue_btn?.addEventListener('click', (): void => {
+    setValues.setContinue();
     MakeSlides.showSlides(doc);
   });
   return continue_btn;

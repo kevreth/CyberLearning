@@ -1,6 +1,6 @@
 import { Slide } from '../../slide';
 import type { MakeSlidesTypeSort } from '../strategies/makeSlidesStrategy';
-export class Sort extends Slide<Array<string>> {
+export class Sort extends Slide {
   processJson(json: Sort): void {
     ({ txt: this.txt, ans: this.ans, isExercise: this.isExercise } = json);
   }
