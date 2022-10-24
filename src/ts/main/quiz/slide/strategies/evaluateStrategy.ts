@@ -11,10 +11,11 @@
 // Another evaluation class, but evaluates an entire set of questions.
 import { Evaluation } from '../../evaluate/evaluate';
 import { makeRow } from '../../evaluate/evaluate.support';
+import type { AnswerType } from './resultStrategy';
 // Only makeRow from Evaluation is required.
 export type FunctionType = (
-  response: string,
-  answer: string,
+  response: AnswerType,
+  answer: AnswerType,
   text: string | string[],
   idx: number,
   length: number
@@ -35,14 +36,14 @@ export type EvaluateTypeSimple = (
 ) => Evaluation;
 export type EvaluateTypeVocab = (
   txt: string[],
-  res: string[],
-  ans: string[],
+  res: AnswerType,
+  ans: AnswerType,
   result: Array<boolean>
 ) => Evaluation;
 export type EvaluateTypeGap = (
   txt: string,
-  res: string[],
-  ans: string[],
+  res: AnswerType,
+  ans: AnswerType,
   result: Array<boolean>
 ) => Evaluation;
 ///////////////////////////////////////////////////////////////////////////////
@@ -138,8 +139,8 @@ export class Evaluate {
   //    see example below).
   /////////////////////////////////////////////////////////////////////////////
   private static multiAnswerStrategy(
-    ans: string[],
-    res: string[],
+    ans: AnswerType,
+    res: AnswerType,
     txt: string | string[],
     result: Array<boolean>,
     rowFunction: FunctionType
@@ -148,8 +149,8 @@ export class Evaluate {
     let length = 0;
     if (ans != null) {
       length = ans.length;
-      ans.forEach((answer, idx) => {
-        const response = res[idx];
+      (ans as string[]).forEach((answer, idx) => {
+        const response = res[idx] as string;
         const row = rowFunction(response, answer, txt, idx, length);
         rows.push(row);
       });

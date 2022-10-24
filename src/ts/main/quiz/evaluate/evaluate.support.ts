@@ -1,3 +1,4 @@
+import type { AnswerType } from '../slide/strategies/resultStrategy';
 import type { SlideInterface } from '../slideInterface';
 import { Evaluation, ROW } from './evaluate';
 export function summary(
@@ -14,11 +15,15 @@ export function percentCorrect(
   if (responseCtr === 0) return '0'; // prevent divide-by-zero error
   return ((correctCtr / responseCtr) * 100).toFixed(0);
 }
-export function makeRow(question: string, response: string, answer: string) {
+export function makeRow(
+  question: string,
+  response: AnswerType,
+  answer: AnswerType
+) {
   let text = ROW;
   text = text.replace('%Q%', question);
-  text = text.replace('%A%', response);
-  text = text.replace('%C%', answer);
+  text = text.replace('%A%', response as string);
+  text = text.replace('%C%', answer as string);
   return text;
 }
 export function numbering(responseCtr: number, text: string) {
